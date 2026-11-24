@@ -1,0 +1,20 @@
+# The environment build.sh runs in:  conda env create -f environment.yml   (exact versions of everything: environment.lock.txt,
+# conda create -n bit-tax-db --file environment.lock.txt)
+name: bit-tax-db
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.14
+  - mmseqs2=18.8cc5c
+  - diamond=2.2.9
+  - taxonkit=0.20.0
+  - ncbi-datasets-cli=18.41.1
+  - sourmash=4.9.4
+  - numpy=2.5
+  - aria2=1.37.0
+  - pigz=2.8
+  - zstd=1.5.7
+  - curl
+  - unzip
+  - gawk

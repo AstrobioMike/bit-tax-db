@@ -1,0 +1,27 @@
+bit-tax-db 2026-11: the reference database of bit classify-seqs (and the bit run-wf metagenomics workflow)
+
+sources
+  GTDB release 232 (R232): the 199,923 species-representative genomes (proteins: gtdb_proteins_aa_reps_r232.tar.gz; genomes for k-mers:
+    gtdb_genomes_reps_r232.tar.gz; taxonomy: ar53_taxonomy_r232.tsv.gz, bac120_taxonomy_r232.tsv.gz)
+  NCBI, retrieved 2026-11-17: 3,329 eukaryote genomes with annotated proteins, one per species (2,811 fungi, 517 protists, and human
+    GRCh38.p14), and the RefSeq viral proteins (15,265 viral taxa); NCBI taxonomy (new_taxdump) of the same date
+  659,705,758 proteins in all (GTDB 618,638,921; NCBI eukaryote 40,344,014; NCBI viral 722,823)
+
+files
+  proteins.dmnd              DIAMOND database: the representatives of the 353,638,308 protein clusters (MMseqs2 linclust, 80% identity,
+                             80% coverage of the member), each named <lineage ID>.<n>; the lineage ID is the cluster members' lowest common
+                             ancestor (1 = root: members from more than one domain)
+  protein-lineages.tsv       lineage ID, then the names from domain down to the cluster label's rank, joined by ";" (241,745 IDs);
+                             a rank the taxonomy skips is filled as "unclassified <nearest named taxon above> <rank>"
+  genome-kmers.hashes.u64    sampled DNA k-mers of 203,252 genomes (GTDB R232 representatives + the NCBI eukaryotes): sourmash
+                             FracMinHash, k = 31, scaled = 200; every genome's hashes as one sorted block of little-endian uint64
+  genome-kmers.genomes.tsv   genome accession, offset of its block (in hashes), number of hashes
+  genome-lineages.tsv        genome accession, then its names from domain to species (same form as protein-lineages.tsv)
+
+taxonomy
+  GTDB names for bacteria and archaea; NCBI names for eukaryotes and viruses (domain, phylum, class, order, family, genus, species);
+  merged with taxonkit create-taxdump. Viral entries whose NCBI lineage isn't under Viruses are left out (7, e.g. host taxids).
+
+built with
+  mmseqs2 18.8cc5c, diamond 2.2.9, taxonkit 0.20.0, ncbi-datasets-cli 18.41.1, sourmash 4.9.4; build code and environment:
+  the bit-tax-db repository, release 2026-11
